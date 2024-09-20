@@ -5,7 +5,7 @@ import Message from "./Message";
 import { useCities } from "../contextAPI/CitiesContextProvider";
 
 function CityList() {
-  const { cities, loading } = useCities();
+  const { cities, loading, deleteCity } = useCities();
   if (loading) return <Spinner />;
   if (!cities.length) {
     return (
@@ -16,7 +16,7 @@ function CityList() {
   return (
     <ul className={styles.cityList}>
       {cities.map((city) => (
-        <CityItem city={city} key={city.id} />
+        <CityItem city={city} onDelete={deleteCity} key={city.id} />
       ))}
     </ul>
   );

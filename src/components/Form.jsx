@@ -8,6 +8,8 @@ import Message from "./Message";
 import Spinner from "./Spinner";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useCities } from "../contextAPI/CitiesContextProvider";
+import { useNavigate } from "react-router-dom";
 
 export function convertToEmoji(countryCode) {
   const codePoints = countryCode
@@ -20,12 +22,15 @@ const BASE_URL = "https://api.bigdatacloud.net/data/reverse-geocode-client?";
 function Form() {
   const [isLoadingGeocoding, setIsLoadingGeocoding] = useState(false);
   const [lat, lng] = useURLPosition();
+  const navigate = useNavigate();
   const [cityName, setCityName] = useState("");
   const [country, setCountry] = useState("");
   const [emoji, setEmoji] = useState("");
   const [date, setDate] = useState(new Date());
   const [notes, setNotes] = useState("");
   const [geocodingError, setGeocodingError] = useState(null);
+  const { createCity, isLoading } = useCities();
+
   useEffect(() => {
     if (!lat && !lng) return;
     async function fetchCityData() {
@@ -50,14 +55,39 @@ function Form() {
     fetchCityData();
   }, [lat, lng]);
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!cityName || !date) return;
+    const newCity = {
+      cityName,
+      country,
+      emoji,
+      date,
+      notes,
+      position: {
+        lat,
+        lng,
+      },
+      id: Date.now(),
+    };
+    await createCity(newCity);
+    navigate("/app");
+  }
+
   if (!lat && !lng)
     return (
       <Message message="Please choose a location by clicking on the map." />
     );
+
   if (isLoadingGeocoding) return <Spinner />;
+
   if (geocodingError) return <Message message={geocodingError}></Message>;
+
   return (
-    <form className={styles.form}>
+    <form
+      className={`${styles.form} ${isLoading ? styles.loading : ""}`}
+      onSubmit={handleSubmit}
+    >
       <div className={styles.row}>
         <label htmlFor="cityName">City name</label>
         <input
@@ -76,6 +106,7 @@ function Form() {
           value={date}
         /> */}
         <DatePicker
+          id="date"
           selected={date}
           dateFormat="dd/MM/yyyy"
           onChange={(date) => setDate(date)}

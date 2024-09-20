@@ -1,16 +1,34 @@
 import styles from "./Login.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
+import { useAuth } from "../contextAPI/AuthContext";
+import Button from "../components/Button";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import Message from "../components/Message";
 
 export default function Login() {
-  // PRE-FILL FOR DEV PURPOSES
-  const [email, setEmail] = useState("jack@example.com");
+  // PRE-FILL FOR TESTING PURPOSES
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [email, setEmail] = useState("mashrafie@example.com");
   const [password, setPassword] = useState("qwerty");
+  const { login, isAuthenticated } = useAuth();
+  const type = searchParams.get("type");
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    login(email, password);
+  }
+  useEffect(() => {
+    if (isAuthenticated) navigate("/app", { replace: true });
+  }, [isAuthenticated]);
   return (
     <main className={styles.login}>
       <NavBar />
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        {type === "redirect" && (
+          <Message message="Please log in to continue." />
+        )}
         <div className={styles.row}>
           <label htmlFor="email">Email address</label>
           <input
@@ -32,7 +50,7 @@ export default function Login() {
         </div>
 
         <div>
-          <button>Login</button>
+          <Button type="primary">Login</Button>
         </div>
       </form>
     </main>
