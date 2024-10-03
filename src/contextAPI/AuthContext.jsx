@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
+import axios from "axios";
 const AuthContext = createContext();
 const initialState = JSON.parse(localStorage.getItem("authorization")) || {
   user: null,
@@ -33,25 +34,34 @@ function AuthProvider({ children }) {
 
   async function login(email, password) {
     try {
-      const res = await fetch(
-        "https://worldwise-backend-6tcs.onrender.com/api/v1/users/login",
-        {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify({ email, password }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const { data } = await res.json();
-
-      if (data.user) {
-        setAuth({ user: data.user, isAuthenticated: true });
-        dispatch({ type: "login", payload: data.user });
+      // const res = await fetch(
+      //   "https://worldwise-backend-6tcs.onrender.com/api/v1/users/login",
+      //   {
+      //     method: "POST",
+      //     credentials: "include",
+      //     body: JSON.stringify({ email, password }),
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
+      const { data } = await axios({
+        method: "POST",
+        url: "https://worldwise-backend-6tcs.onrender.com/api/v1/users/login",
+        data: {
+          email,
+          password,
+        },
+        withCredentials: true,
+      });
+      // const { data } = await res.json();
+      if (data.data.user) {
+        setAuth({ user: data.data.user, isAuthenticated: true });
+        dispatch({ type: "login", payload: data.data.user });
       }
     } catch (error) {
       alert("Email or password is wrong.");
+      console.log(error.response.data.message);
     }
 
     return;
