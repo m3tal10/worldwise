@@ -60,8 +60,7 @@ function AuthProvider({ children }) {
         dispatch({ type: "login", payload: data.data.user });
       }
     } catch (error) {
-      alert("Email or password is wrong.");
-      console.log(error.response.data.message);
+      alert(error.response.data.message);
     }
 
     return;
@@ -81,24 +80,19 @@ function AuthProvider({ children }) {
   async function signup(newUser) {
     try {
       newUser.photo = "default-user";
-      const res = await fetch(
-        "https://worldwise-backend-6tcs.onrender.com/api/v1/users/signup",
-        {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify(newUser),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const { data } = await res.json();
-      if (data.user) {
-        setAuth({ user: data.user, isAuthenticated: true });
-        dispatch({ type: "signup", payload: data.user });
+      const { data } = await axios({
+        method: "POST",
+        url: "https://worldwise-backend-6tcs.onrender.com/api/v1/users/login",
+        data: newUser,
+        withCredentials: true,
+      });
+
+      if (data.data.user) {
+        setAuth({ user: data.data.user, isAuthenticated: true });
+        dispatch({ type: "signup", payload: data.data.user });
       }
     } catch (error) {
-      alert("There was an error signing up.");
+      alert(error.response.data.message);
     }
   }
   return (
