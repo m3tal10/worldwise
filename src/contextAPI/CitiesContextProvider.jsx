@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useAuth } from "./AuthContext";
+import axios from "axios";
 
 const CitiesContext = createContext();
 const initialState = {
@@ -41,15 +42,14 @@ function CitiesContextProvider({ children }) {
       const fetchCities = async () => {
         try {
           dispatch({ type: "loading" });
-          const res = await fetch(
-            `https://worldwise-backend-6tcs.onrender.com/api/v1/cities/user/${user.id}`,
-            {
-              credentials: "include",
-            }
-          );
-          const { data } = await res.json();
-          dispatch({ type: "cities/loaded", payload: data.cities });
-        } catch (err) {
+          const { data } = await axios({
+            method: "GET",
+            url: `https://worldwise-backend-6tcs.onrender.com/api/v1/cities/user/${user.id}`,
+            withCredentials: true,
+          });
+          dispatch({ type: "cities/loaded", payload: data.data.cities });
+          console.log(data);
+        } catch (error) {
           const message = "There was an error loading the data...";
           dispatch({ type: "rejected", payload: message });
           alert(message);
@@ -73,20 +73,14 @@ function CitiesContextProvider({ children }) {
     try {
       newCity.user = user.id;
       dispatch({ type: "loading" });
-      const res = await fetch(
-        "https://worldwise-backend-6tcs.onrender.com/api/v1/cities/",
-        {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify(newCity),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const { data } = await res.json();
+      const { data } = await axios({
+        method: "POST",
+        url: "https://worldwise-backend-6tcs.onrender.com/api/v1/cities/",
+        data: JSON.stringify(newCity),
+        withCredentials: true,
+      });
 
-      dispatch({ type: "city/created", payload: data.city });
+      dispatch({ type: "city/created", payload: data.data.city });
     } catch (err) {
       const message = "There was an error creating the city...";
       dispatch({ type: "rejected", payload: message });
@@ -98,12 +92,11 @@ function CitiesContextProvider({ children }) {
     try {
       dispatch({ type: "loading" });
       const filteredCities = cities.filter((city) => city.id !== id);
-      const res = await fetch(
-        `https://worldwise-backend-6tcs.onrender.com/api/v1/cities/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await axios({
+        method: "DELETE",
+        url: `https://worldwise-backend-6tcs.onrender.com/api/v1/cities/${id}`,
+        withCredentials: true,
+      });
       dispatch({ type: "cities/loaded", payload: filteredCities });
     } catch (err) {
       const message = "There was an error deleting the city...";
