@@ -70,7 +70,7 @@ function AuthProvider({ children }) {
     if (user && isAuthenticated) {
       const res = await axios({
         method: "GET",
-        url: "https://worldwise-backend-6tcs.onrender.com/api/v1/users/login",
+        url: "https://worldwise-backend-6tcs.onrender.com/api/v1/users/logout",
         withCredentials: true,
       });
       setAuth({});
