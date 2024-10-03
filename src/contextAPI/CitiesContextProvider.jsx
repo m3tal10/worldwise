@@ -42,7 +42,7 @@ function CitiesContextProvider({ children }) {
         try {
           dispatch({ type: "loading" });
           const res = await fetch(
-            `http://localhost:8000/api/v1/cities/user/${user.id}`,
+            `https://worldwise-backend-6tcs.onrender.com/api/v1/cities/user/${user.id}`,
             {
               credentials: "include",
             }
@@ -73,14 +73,17 @@ function CitiesContextProvider({ children }) {
     try {
       newCity.user = user.id;
       dispatch({ type: "loading" });
-      const res = await fetch("http://localhost:8000/api/v1/cities/", {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify(newCity),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://worldwise-backend-6tcs.onrender.com/api/v1/cities/",
+        {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify(newCity),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const { data } = await res.json();
 
       dispatch({ type: "city/created", payload: data.city });
@@ -95,9 +98,12 @@ function CitiesContextProvider({ children }) {
     try {
       dispatch({ type: "loading" });
       const filteredCities = cities.filter((city) => city.id !== id);
-      const res = await fetch(`http://localhost:8000/api/v1/cities/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://worldwise-backend-6tcs.onrender.com/api/v1/cities/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       dispatch({ type: "cities/loaded", payload: filteredCities });
     } catch (err) {
       const message = "There was an error deleting the city...";

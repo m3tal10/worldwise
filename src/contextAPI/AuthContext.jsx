@@ -33,14 +33,17 @@ function AuthProvider({ children }) {
 
   async function login(email, password) {
     try {
-      const res = await fetch("http://localhost:8000/api/v1/users/login", {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://worldwise-backend-6tcs.onrender.com/api/v1/users/login",
+        {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify({ email, password }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const { data } = await res.json();
 
       if (data.user) {
@@ -55,10 +58,13 @@ function AuthProvider({ children }) {
   }
   async function logout() {
     if (user && isAuthenticated) {
-      const res = await fetch("http://localhost:8000/api/v1/users/logout", {
-        method: "GET",
-        credentials: "include",
-      });
+      const res = await fetch(
+        "https://worldwise-backend-6tcs.onrender.com/api/v1/users/logout",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
 
       setAuth({});
       dispatch({ type: "logout" });
@@ -68,14 +74,17 @@ function AuthProvider({ children }) {
   async function signup(newUser) {
     try {
       newUser.photo = "default-user";
-      const res = await fetch("http://localhost:8000/api/v1/users/signup", {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify(newUser),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://worldwise-backend-6tcs.onrender.com/api/v1/users/signup",
+        {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify(newUser),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const { data } = await res.json();
       if (data.user) {
         setAuth({ user: data.user, isAuthenticated: true });
