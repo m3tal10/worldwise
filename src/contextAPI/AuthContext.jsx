@@ -37,7 +37,7 @@ function AuthProvider({ children }) {
         "https://worldwise-backend-6tcs.onrender.com/api/v1/users/login",
         {
           method: "POST",
-          credentials: "include",
+          // credentials: "include",
           body: JSON.stringify({ email, password }),
           headers: {
             "Content-Type": "application/json",
