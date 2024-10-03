@@ -68,14 +68,11 @@ function AuthProvider({ children }) {
   }
   async function logout() {
     if (user && isAuthenticated) {
-      const res = await fetch(
-        "https://worldwise-backend-6tcs.onrender.com/api/v1/users/logout",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-
+      const res = await axios({
+        method: "GET",
+        url: "https://worldwise-backend-6tcs.onrender.com/api/v1/users/login",
+        withCredentials: true,
+      });
       setAuth({});
       dispatch({ type: "logout" });
     }
