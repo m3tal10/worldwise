@@ -10,18 +10,22 @@ export default function Login() {
   // PRE-FILL FOR TESTING PURPOSES
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [email, setEmail] = useState("mashrafie@example.com");
-  const [password, setPassword] = useState("qwerty");
+  const [email, setEmail] = useState("rahimsheikh05@gmail.com");
+  const [password, setPassword] = useState("mash1234");
   const { login, isAuthenticated } = useAuth();
   const type = searchParams.get("type");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    login(email, password);
+    await login(email, password);
   }
+  function handleClick() {
+    navigate("/signup");
+  }
+
   useEffect(() => {
     if (isAuthenticated) navigate("/app", { replace: true });
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
   return (
     <main className={styles.login}>
       <NavBar />
@@ -49,8 +53,11 @@ export default function Login() {
           />
         </div>
 
-        <div>
+        <div className={styles.buttongap}>
           <Button type="primary">Login</Button>
+          <Button type="secondary" use="link" onClick={handleClick}>
+            Sign up
+          </Button>
         </div>
       </form>
     </main>

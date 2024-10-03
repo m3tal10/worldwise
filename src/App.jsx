@@ -23,6 +23,7 @@ const Login = lazy(() => import("./pages/Login"));
 import { CitiesContextProvider } from "./contextAPI/CitiesContextProvider";
 import { AuthProvider } from "./contextAPI/AuthContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
               <Route path="pricing" element={<Pricing />}></Route>
               <Route path="product" element={<Product />}></Route>
               <Route path="login" element={<Login />}></Route>
+              <Route path="signup" element={<Signup />}></Route>
               <Route
                 path="app"
                 element={

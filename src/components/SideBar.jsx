@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import AppNav from "./AppNav";
 import Footer from "./Footer";
 import Logo from "./Logo";

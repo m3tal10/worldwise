@@ -1,6 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
 const AuthContext = createContext();
-const initialState = {
+const initialState = JSON.parse(localStorage.getItem("authorization")) || {
   user: null,
   isAuthenticated: false,
 };
@@ -9,20 +10,15 @@ function reducer(state, action) {
   switch (action.type) {
     case "login":
       return { ...state, user: action.payload, isAuthenticated: true };
+    case "signup":
+      return { ...state, user: action.payload, isAuthenticated: true };
     case "logout":
-      return { ...initialState };
+      return { ...state, user: null, isAuthenticated: false };
 
     default:
       throw new Error("Unknown action.");
   }
 }
-const FAKE_USER = {
-  name: "Mashrafie",
-  email: "mashrafie@example.com",
-  password: "qwerty",
-  avatar:
-    "https://media.licdn.com/dms/image/v2/C5603AQHXYjIQrdABLQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1644058972687?e=1732147200&v=beta&t=AfIfYWIpc23Q1vjdtbn4dQZUprvqhk--PxosUP1Vn5I",
-};
 
 function AuthProvider({ children }) {
   const [{ user, isAuthenticated }, dispatch] = useReducer(
@@ -30,20 +26,69 @@ function AuthProvider({ children }) {
     initialState
   );
 
-  function login(email, password) {
-    if (email === FAKE_USER.email && password === FAKE_USER.password) {
-      dispatch({ type: "login", payload: FAKE_USER });
+  const [auth, setAuth] = useLocalStorage(
+    { user, isAuthenticated },
+    "authorization"
+  );
+
+  async function login(email, password) {
+    try {
+      const res = await fetch("http://localhost:8000/api/v1/users/login", {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const { data } = await res.json();
+
+      if (data.user) {
+        setAuth({ user: data.user, isAuthenticated: true });
+        dispatch({ type: "login", payload: data.user });
+      }
+    } catch (error) {
+      alert("Email or password is wrong.");
     }
+
     return;
   }
-  function logout() {
+  async function logout() {
     if (user && isAuthenticated) {
+      const res = await fetch("http://localhost:8000/api/v1/users/logout", {
+        method: "GET",
+        credentials: "include",
+      });
+
+      setAuth({});
       dispatch({ type: "logout" });
     }
     return;
   }
+  async function signup(newUser) {
+    try {
+      newUser.photo = "default-user";
+      const res = await fetch("http://localhost:8000/api/v1/users/signup", {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(newUser),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const { data } = await res.json();
+      if (data.user) {
+        setAuth({ user: data.user, isAuthenticated: true });
+        dispatch({ type: "signup", payload: data.user });
+      }
+    } catch (error) {
+      alert("There was an error signing up.");
+    }
+  }
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated, login, logout, signup }}
+    >
       {children}
     </AuthContext.Provider>
   );

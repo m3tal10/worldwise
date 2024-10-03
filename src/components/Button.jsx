@@ -1,7 +1,7 @@
 import styles from "./Button.module.css";
 import { useNavigate } from "react-router-dom";
 
-function Button({ children, onClick, use, type }) {
+function Button({ children, onClick, use, type, disabled }) {
   const navigate = useNavigate();
   function handleClick(e) {
     if (type === "back") {
@@ -12,6 +12,7 @@ function Button({ children, onClick, use, type }) {
       onClick();
     }
     if (use === "link") {
+      e.preventDefault();
       onClick();
     }
   }
@@ -19,6 +20,7 @@ function Button({ children, onClick, use, type }) {
     <button
       className={`${styles.btn} ${styles[type]}`}
       onClick={(e) => handleClick(e)}
+      disabled={disabled}
     >
       {children}
     </button>

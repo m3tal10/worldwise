@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
+import { useAuth } from "./AuthContext";
 
 const CitiesContext = createContext();
 const initialState = {
@@ -32,24 +33,33 @@ function reducer(state, action) {
 function CitiesContextProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { cities, loading, currentCity, error } = state;
-  useEffect(function () {
-    const fetchCities = async () => {
-      try {
-        dispatch({ type: "loading" });
-        const res = await fetch(
-          "https://my-json-server.typicode.com/m3tal10/CitiesData/db"
-        );
-        const { cities } = await res.json();
-        dispatch({ type: "cities/loaded", payload: cities });
-      } catch (err) {
-        const message = "There was an error loading the data...";
-        dispatch({ type: "rejected", payload: message });
-        alert(message);
-      }
-    };
-    fetchCities();
-    return () => {};
-  }, []);
+  const { user, isAuthenticated } = useAuth();
+
+  useEffect(
+    function () {
+      if (!isAuthenticated) return;
+      const fetchCities = async () => {
+        try {
+          dispatch({ type: "loading" });
+          const res = await fetch(
+            `http://localhost:8000/api/v1/cities/user/${user.id}`,
+            {
+              credentials: "include",
+            }
+          );
+          const { data } = await res.json();
+          dispatch({ type: "cities/loaded", payload: data.cities });
+        } catch (err) {
+          const message = "There was an error loading the data...";
+          dispatch({ type: "rejected", payload: message });
+          alert(message);
+        }
+      };
+      fetchCities();
+      return () => {};
+    },
+    [isAuthenticated, user]
+  );
 
   async function getCity(id) {
     if (Number(id) === currentCity.id) return;
@@ -61,22 +71,23 @@ function CitiesContextProvider({ children }) {
 
   const createCity = async (newCity) => {
     try {
+      newCity.user = user.id;
       dispatch({ type: "loading" });
-      // const res = await fetch(
-      //   "https://my-json-server.typicode.com/m3tal10/CitiesData/db",
-      //   {
-      //     method: "POST",
-      //     body: JSON.stringify(newCity),
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
-      // const data = await res.json();
-      dispatch({ type: "city/created", payload: newCity });
+      const res = await fetch("http://localhost:8000/api/v1/cities/", {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify(newCity),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const { data } = await res.json();
+
+      dispatch({ type: "city/created", payload: data.city });
     } catch (err) {
       const message = "There was an error creating the city...";
       dispatch({ type: "rejected", payload: message });
+      console.log(err);
       alert(message);
     }
   };
@@ -85,17 +96,9 @@ function CitiesContextProvider({ children }) {
     try {
       dispatch({ type: "loading" });
       const filteredCities = cities.filter((city) => city.id !== id);
-      // const res = await fetch(
-      //   "https://my-json-server.typicode.com/m3tal10/CitiesData/db",
-      //   {
-      //     method: "DELETE",
-      //     body: JSON.stringify(newCity),
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
-      // const data = await res.json();
+      const res = await fetch(`http://localhost:8000/api/v1/cities/${id}`, {
+        method: "DELETE",
+      });
       dispatch({ type: "cities/loaded", payload: filteredCities });
     } catch (err) {
       const message = "There was an error deleting the city...";

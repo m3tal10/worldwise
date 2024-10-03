@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Map from "../components/Map";
 import SideBar from "../components/SideBar";
 import User from "../components/User";

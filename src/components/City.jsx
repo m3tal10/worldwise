@@ -17,7 +17,7 @@ function City() {
 
   // TEMP DATA
   const currentCity = cities.filter((city) => {
-    return city.id === Number(id);
+    return city.id === id;
   });
   const { cityName, emoji, date, notes } = currentCity[0];
 

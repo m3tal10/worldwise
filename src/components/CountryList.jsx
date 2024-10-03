@@ -11,12 +11,15 @@ function CountryList() {
     if (!arr.includes(city.country)) return [...arr, city];
     else return arr;
   }, []);
-  if (!countries.length) return <Message />;
+  if (!countries.length)
+    return (
+      <Message message="Add your first city by clicking on a city on the map." />
+    );
 
   return (
     <ul className={styles.countryList}>
       {countries.map((country) => (
-        <CountryItem country={country} key={country.country} />
+        <CountryItem country={country} key={country.id} />
       ))}
     </ul>
   );
