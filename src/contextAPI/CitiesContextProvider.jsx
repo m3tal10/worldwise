@@ -87,7 +87,6 @@ function CitiesContextProvider({ children }) {
     } catch (err) {
       const message = "There was an error creating the city...";
       dispatch({ type: "rejected", payload: message });
-      console.log(err);
       alert(message);
     }
   };
