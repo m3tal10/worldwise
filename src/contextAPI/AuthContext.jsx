@@ -82,7 +82,7 @@ function AuthProvider({ children }) {
       newUser.photo = "default-user";
       const { data } = await axios({
         method: "POST",
-        url: "https://worldwise-backend-6tcs.onrender.com/api/v1/users/login",
+        url: "https://worldwise-backend-6tcs.onrender.com/api/v1/users/signup",
         data: newUser,
         withCredentials: true,
       });
