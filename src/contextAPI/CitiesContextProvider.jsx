@@ -77,7 +77,7 @@ function CitiesContextProvider({ children }) {
       const { data } = await axios({
         method: "POST",
         url: "https://worldwise-backend-6tcs.onrender.com/api/v1/cities/",
-        data: JSON.stringify(newCity),
+        data: newCity,
         withCredentials: true,
       });
 
