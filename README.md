@@ -3,9 +3,8 @@ Welcome to WorldWise, your personal travel companion designed to make every jour
 
 With Worldwise, you can:
 
-**Capture Your Journey:** Seamlessly log each destination and add personal notes, photos, and memories.
-Map Your World: Visualize your travels on an interactive world map that grows as you explore.
-Inspire and Be Inspired: Discover new locations based on your interests, and connect with other adventurers who share your passion for exploring the world.
+-**Capture Your Journey:** Seamlessly log each destination and add personal notes, and memories.
+-**Map Your World:** Visualize your travels on an interactive world map that grows as you explore.
 Your travel experiences are priceless, and Worldwise ensures they’re never forgotten. Ready to unlock your next adventure? Start tracking your world today!
 
 Live Link- https://worldwise-m3tal10.netlify.app/
