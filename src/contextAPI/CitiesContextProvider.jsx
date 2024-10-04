@@ -48,7 +48,6 @@ function CitiesContextProvider({ children }) {
             withCredentials: true,
           });
           dispatch({ type: "cities/loaded", payload: data.data.cities });
-          console.log(data);
         } catch (error) {
           const message = "There was an error loading the data...";
           dispatch({ type: "rejected", payload: message });
@@ -72,7 +71,6 @@ function CitiesContextProvider({ children }) {
   const createCity = async (newCity) => {
     try {
       newCity.user = user.id;
-      console.log(newCity);
       dispatch({ type: "loading" });
       const { data } = await axios({
         method: "POST",
