@@ -14,9 +14,11 @@ export default function Product() {
             Just $9/month.
           </h2>
           <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae vel
-            labore mollitia iusto. Recusandae quos provident, laboriosam fugit
-            voluptatem iste.
+            With Worldwise, we believe in keeping things simple and
+            straightforward. For just $9/month, you’ll have access to all the
+            features that help you track your adventures, store memories, and
+            explore new destinations. No hidden fees or complicated plans—just
+            one simple price for a world of travel possibilities!
           </p>
         </div>
         <img

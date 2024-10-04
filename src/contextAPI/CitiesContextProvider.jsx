@@ -72,6 +72,7 @@ function CitiesContextProvider({ children }) {
   const createCity = async (newCity) => {
     try {
       newCity.user = user.id;
+      console.log(newCity);
       dispatch({ type: "loading" });
       const { data } = await axios({
         method: "POST",

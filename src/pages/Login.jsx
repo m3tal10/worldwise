@@ -10,8 +10,8 @@ export default function Login() {
   // PRE-FILL FOR TESTING PURPOSES
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [email, setEmail] = useState("rahimsheikh05@gmail.com");
-  const [password, setPassword] = useState("mash1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { login, isAuthenticated } = useAuth();
   const type = searchParams.get("type");
 
