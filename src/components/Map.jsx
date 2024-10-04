@@ -17,16 +17,17 @@ import useURLPosition from "../hooks/useURLPosition";
 function Map() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [mapLat, mapLng] = useURLPosition();
-  const [mapPosition, setMapPosition] = useState([
-    38.727881642324164, -9.140900099907554,
-  ]);
+
   const {
     position,
     isLoading: isLoadingPosition,
     getPosition,
   } = useGeolocation();
   const { cities } = useCities();
-
+  const defaultPosition = cities[0]
+    ? [cities[0]?.position.lat, cities[0]?.position.lng]
+    : [1, 1];
+  const [mapPosition, setMapPosition] = useState(defaultPosition);
   useEffect(() => {
     if (mapLat && mapLng) setMapPosition([mapLat, mapLng]);
   }, [mapLat, mapLng]);
