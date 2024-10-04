@@ -47,7 +47,7 @@ function AuthProvider({ children }) {
       // );
       const { data } = await axios({
         method: "POST",
-        url: "https://worldwise-backend-6tcs.onrender.com/api/v1/users/login",
+        url: "https://werewolf-backend.vercel.app/api/v1/users/login",
         data: {
           email,
           password,
@@ -55,6 +55,7 @@ function AuthProvider({ children }) {
         withCredentials: true,
       });
       // const { data } = await res.json();
+
       if (data.data.user) {
         setAuth({ user: data.data.user, isAuthenticated: true });
         dispatch({ type: "login", payload: data.data.user });
