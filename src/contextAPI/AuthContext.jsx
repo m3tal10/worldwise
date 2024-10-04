@@ -35,7 +35,7 @@ function AuthProvider({ children }) {
   async function login(email, password) {
     try {
       // const res = await fetch(
-      //   "https://worldwise-backend-6tcs.onrender.com/api/v1/users/login",
+      //   "https://worldwise-backend.vercel.app/api/v1/users/login",
       //   {
       //     method: "POST",
       //     credentials: "include",
@@ -70,7 +70,7 @@ function AuthProvider({ children }) {
     if (user && isAuthenticated) {
       const res = await axios({
         method: "GET",
-        url: "https://worldwise-backend-6tcs.onrender.com/api/v1/users/logout",
+        url: "https://worldwise-backend.vercel.app/api/v1/users/logout",
         withCredentials: true,
       });
       setAuth({});
@@ -83,7 +83,7 @@ function AuthProvider({ children }) {
       newUser.photo = "default-user";
       const { data } = await axios({
         method: "POST",
-        url: "https://worldwise-backend-6tcs.onrender.com/api/v1/users/signup",
+        url: "https://worldwise-backend.vercel.app/api/v1/users/signup",
         data: newUser,
         withCredentials: true,
       });

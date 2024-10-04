@@ -44,7 +44,7 @@ function CitiesContextProvider({ children }) {
           dispatch({ type: "loading" });
           const { data } = await axios({
             method: "GET",
-            url: `https://worldwise-backend-6tcs.onrender.com/api/v1/cities/user/${user.id}`,
+            url: `https://worldwise-backend.vercel.app/api/v1/cities/user/${user.id}`,
             withCredentials: true,
           });
           dispatch({ type: "cities/loaded", payload: data.data.cities });
@@ -74,7 +74,7 @@ function CitiesContextProvider({ children }) {
       dispatch({ type: "loading" });
       const { data } = await axios({
         method: "POST",
-        url: "https://worldwise-backend-6tcs.onrender.com/api/v1/cities/",
+        url: "https://worldwise-backend.vercel.app/api/v1/cities/",
         data: newCity,
         withCredentials: true,
       });
@@ -93,7 +93,7 @@ function CitiesContextProvider({ children }) {
       const filteredCities = cities.filter((city) => city.id !== id);
       const res = await axios({
         method: "DELETE",
-        url: `https://worldwise-backend-6tcs.onrender.com/api/v1/cities/${id}`,
+        url: `https://worldwise-backend.vercel.app/api/v1/cities/${id}`,
         withCredentials: true,
       });
       dispatch({ type: "cities/loaded", payload: filteredCities });
