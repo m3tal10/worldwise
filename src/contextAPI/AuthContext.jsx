@@ -47,7 +47,7 @@ function AuthProvider({ children }) {
       // );
       const { data } = await axios({
         method: "POST",
-        url: "https://werewolf-backend.vercel.app/api/v1/users/login",
+        url: "https://worldwise-backend.vercel.app/api/v1/users/login",
         data: {
           email,
           password,
